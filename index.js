@@ -12,7 +12,7 @@ var weights = {
 };
 var masses = [100, 300, 600, 1000, 1500, 1550, 2000];
 function find_closest_mass(mass) {
-    closest_mass = masses[0];
+    var closest_mass = masses[0];
     for (var i = 0; i < masses.length; i++) {
         if (Math.abs(masses[i] - mass) < Math.abs(closest_mass - mass)) {
             closest_mass = masses[i];
@@ -33,7 +33,7 @@ function calculate_gene_weight(gene) {
 function print_titles() {
     var titles = ['Gene', 'Left (5)', 'Right(3)', 'Mass'];
     for (var i = 0; i < masses.length; i++) {
-        titles.push(masses[i]);
+        titles.push(masses[i].toString());
     }
     console.log(titles.join(','));
 }

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>CodePen - Gene mass calculator</title>
+  <link rel="stylesheet" href="./style.css">
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<html>
+  <body>
+  <div id="entire-document" class="entire">
+    <h1>Gene mass calculator</h1>
+    <div id="text-inputs">
+      <label for="name">Gene sequence</label>
+      <input type="text" id="name" name="name" required="required" placeholder="e.g. gaGCATTAAGCTAGgac" size="80">
+
+      <div id="gene-input">
+        <h2>Gene masses</h2>
+
+        <label for="gene-A">A</label>
+        <input type="number" id="gene-A" class="gene-numeric-input" value="1.0" name="Gene A">
+
+
+        <label for="gene-a">a</label>
+        <input type="number" id="gene-a" class="gene-numeric-input" value="1.0" name="Gene a">
+
+
+        <label for="gene-C">C</label>
+        <input type="number" id="gene-C" class="gene-numeric-input" value="1.0" name="Gene C">
+
+
+        <label for="gene-c">c</label>
+        <input type="number" id="gene-c" class="gene-numeric-input" value="1.0" name="Gene c">
+
+
+        <label for="gene-T">T</label>
+        <input type="number" id="gene-T" class="gene-numeric-input" value="1.0" name="Gene T">
+
+
+        <label for="gene-t">t</label>
+        <input type="number" id="gene-t" class="gene-numeric-input" value="1.0" name="Gene t">
+
+
+        <label for="gene-G">G</label>
+        <input type="number" id="gene-G" class="gene-numeric-input" value="1.0" name="Gene G">
+
+
+        <label for="gene-g">g</label>
+        <input type="number" id="gene-g" class="gene-numeric-input" value="1.0" name="Gene g">
+
+      </div>
+
+      <div id="masses-to-search-div">
+        <h2>Masses to search for</h2>
+        <label id="masses-to-search-label" for="masses-to-search">Masses to seach for (one per line)</label>
+        <textarea id="masses-to-search" name="masses-to-search" placeholder="e.g.:&#13;&#10;150.4&#13;&#10;1100&#13;&#10;2000" rows="5" cols="33"></textarea>
+      </div>
+
+      <div id="total-mass-div">
+        <h2>Total masxs</h2>
+        <span id="total-mass"></span>
+      </div>
+
+    </div>
+  </div>
+  </body>
+</html>
+<!-- partial -->
+  <script  src="./script.js"></script>
+
+</body>
+</html>
