@@ -74,17 +74,17 @@ function calculateMassesPerSubgene(massesToCheck, subGenes, singleGeneMasses) {
   for (var i=0; i<subGenes.length; i++) {
     let currentGeneMasses = [];
     let currentGene = {}
-    let mass = calculateGeneMass(subGenes[i].subgene, singleGeneMasses)
-    currentGene['name'] = subGenes[i].subgene;
-    currentGene['dotted'] = subGenes[i].dotted;
-    currentGene['masses'] = [];
-    currentGene['mass'] = mass
+    var mass = calculateGeneMass(subGenes[i].subgene, singleGeneMasses)
+    currentGene.name = subGenes[i].subgene;
+    currentGene.dotted = subGenes[i].dotted;
+    currentGene.masses = [];
+    currentGene.mass = mass
     smallestMassDelta = massesToCheck[0]-mass
 
     for (let j=0; j<massesToCheck.length; j++) {
       currentGene['masses'].push(massesToCheck[j]-mass)
-      if (Math.abs(massesToCheck[i]-mass) < Math.abs(smallestMassDelta)) {
-        smallestMassDelta = massesToCheck[i]-mass
+      if (Math.abs(massesToCheck[j]-mass) < Math.abs(smallestMassDelta)) {
+        smallestMassDelta = massesToCheck[j]-mass
       }
     }
     currentGene.minimumDelta = smallestMassDelta
