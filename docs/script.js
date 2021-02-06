@@ -1,5 +1,7 @@
 const genes = ['A', 'a', 'C', 'c', 'G', 'g', 'T', 't'];
 
+const mass_reduction = 61.96;
+
 document.querySelectorAll('.gene-numeric-input').forEach(item => {
   item.addEventListener('input', calculateAllMasses);
 })
@@ -100,7 +102,7 @@ function calculateGeneMass(gene, singleGeneMasses) {
   for (let i=0; i<gene.length; i++) {
     mass += singleGeneMasses[gene.charAt(i)]
   }
-  return mass
+  return mass - mass_reduction;
 }
 
 function getHeaderLine(massesToCheck){
