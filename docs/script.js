@@ -24,7 +24,6 @@ function downloadCSV() {
 
   massesToCheck = getInputMassesValue();
 
-  csv = encodeURIComponent(headerLine)
   a.href = `data:text/csv;charset=utf-8,${element.href}`;
   a.click();
 }
