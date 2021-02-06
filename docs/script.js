@@ -47,12 +47,19 @@ function calculateAllMasses() {
   // Print the result
   headerLine = getHeaderLine(massesToCheck)
   totalMassText.innerHTML += headerLine + '<br>'
-
   geneMassLines = getGeneMassLines(massesPerSubgene);
   totalMassText.innerHTML += geneMassLines.join('<br>')
 
+  // Update the counter title
+  updateResultsTitle(inputGene, geneMassLines)
+
   // Set CSV download data
   setCSVDonloadData(headerLine, geneMassLines)
+}
+
+function updateResultsTitle(inputGene, geneMassLines) {
+  resultsTitle = document.getElementById('total-mass-title');
+  resultsTitle.innerHTML = `Total mass per sub-gene (gene length ${inputGene.length}, ${geneMassLines.length} subgenes)`
 }
 
 function setCSVDonloadData(headerLine, geneMassLines){
@@ -61,7 +68,6 @@ function setCSVDonloadData(headerLine, geneMassLines){
   for (let i=0; i<geneMassLines.length; i++) {
     element.href += geneMassLines[i] + '\n'
   }
-  console.log(element.href)
 }
 
 function calculateMassesPerSubgene(massesToCheck, subGenes, singleGeneMasses) {
@@ -69,10 +75,10 @@ function calculateMassesPerSubgene(massesToCheck, subGenes, singleGeneMasses) {
   for (var i=0; i<subGenes.length; i++) {
     let currentGeneMasses = [];
     let currentGene = {}
-    let mass = calculateGeneMass(subGenes[i], singleGeneMasses)
-    currentGene['name'] = subGenes[i];
+    let mass = calculateGeneMass(subGenes[i].subgene, singleGeneMasses)
+    currentGene['name'] = subGenes[i].subgene;
+    currentGene['dotted'] = subGenes[i].dotted;
     currentGene['masses'] = [];
-
     currentGene['mass'] = mass
     smallestMassDelta = massesToCheck[0]-mass
 
@@ -97,7 +103,7 @@ function calculateGeneMass(gene, singleGeneMasses) {
 }
 
 function getHeaderLine(massesToCheck){
-  lineToPrint = ['Gene', 'Mass']
+  lineToPrint = ['Dotted Gene', 'Gene', 'Mass']
   for (let i=0; i<massesToCheck.length; i++) {
     lineToPrint.push(`Delta(${massesToCheck[i]})`)
   }
@@ -109,7 +115,7 @@ function getGeneMassLines(massesPerSubgene) {
   geneMassLines = []
   for (let i=0; i<massesPerSubgene.length; i++) {
     rawLine = massesPerSubgene[i]
-    lineToPrint = [rawLine['name'], rawLine['mass']]
+    lineToPrint = [rawLine['dotted'], rawLine['name'], rawLine['mass']]
     lineToPrint = lineToPrint.concat(rawLine['masses'])
     lineToPrint = lineToPrint.concat(rawLine.minimumDelta)
     lineToPrint = lineToPrint.join(',')
@@ -139,7 +145,9 @@ function calculateGeneCombinations(geneText) {
   subGenes = []
   for (let i=0; i<geneText.length; i++) {
     for (let j=i+1; j<geneText.length+1; j++) {
-      subGenes.push(geneText.slice(i, j))
+      subgene = geneText.slice(i, j)
+      dotted = '.'.repeat(i) + subgene + '.'.repeat(geneText.length-j)
+      subGenes.push({subgene, dotted})
     }
   }
   return subGenes
