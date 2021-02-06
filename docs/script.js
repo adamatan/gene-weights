@@ -5,6 +5,7 @@ document.querySelectorAll('.gene-numeric-input').forEach(item => {
 })
 
 document.querySelector('#inputGeneText').addEventListener('input', calculateAllMasses);
+document.querySelector('#masses-to-search').addEventListener('input', calculateAllMasses);
 
 
 window.addEventListener('DOMContentLoaded', (event) => {
@@ -27,21 +28,24 @@ function calculateAllMasses() {
   massesPerSubgene = calculateMassesPerSubgene(massesToCheck, subGenes, singleGeneMasses);
 
   // Print the result
+  printHeaderLine(massesToCheck, totalMassText)
   printMassesPerSubgene(massesPerSubgene, totalMassText);
-  console.log(inputGene);
-  console.log(singleGeneMasses);
-  console.log(massesToCheck);
-  console.log(massesPerSubgene);
 }
 
-function calculateMassesPerSubgene(masses, subGenes, singleGeneMasses) {
+function calculateMassesPerSubgene(massesToCheck, subGenes, singleGeneMasses) {
   result = [];
   for (var i=0; i<subGenes.length; i++) {
     let currentGeneMasses = [];
     let currentGene = {}
+    let mass = calculateGeneMass(subGenes[i], singleGeneMasses)
     currentGene['name'] = subGenes[i];
-    currentGene['masses'] = currentGeneMasses;
-    currentGene['mass'] = calculateGeneMass(subGenes[i], singleGeneMasses)
+    currentGene['masses'] = [];
+
+    currentGene['mass'] = mass
+
+    for (let j=0; j<massesToCheck.length; j++) {
+      currentGene['masses'].push(massesToCheck[j]-mass)
+    }
     result.push(currentGene)
   }
   return result;
@@ -55,10 +59,19 @@ function calculateGeneMass(gene, singleGeneMasses) {
   return mass
 }
 
+function printHeaderLine(massesToCheck, textElement){
+  lineToPrint = ['Gene', 'Mass']
+  for (let i=0; i<massesToCheck.length; i++) {
+    lineToPrint.push(`Delta(${massesToCheck[i]})`)
+  }
+  textElement.innerHTML += lineToPrint.join(',') + '<br>';
+}
+
 function printMassesPerSubgene(massesPerSubgene, textElement) {
   for (let i=0; i<massesPerSubgene.length; i++) {
     rawLine = massesPerSubgene[i]
-    lineToPrint = [rawLine['name'], rawLine['mass']].join(',')
+    lineToPrint = [rawLine['name'], rawLine['mass']]
+    lineToPrint = lineToPrint.concat(rawLine['masses']).join(',')
     textElement.innerHTML += lineToPrint + '<br>'
   }
 }
