@@ -13,6 +13,19 @@ window.addEventListener('DOMContentLoaded', (event) => {
 });
 
 
+document.querySelector('#csv-download-link').addEventListener('click', () =>
+{downloadCSV()} )
+
+function downloadCSV() {
+  a = document.createElement('a');
+  document.body.appendChild(a);
+  a.download = 'Gene_Masses.csv';
+  csv = encodeURIComponent('Hello, world, hi!')
+  a.href = `data:text/csv;charset=utf-8,${csv}`;
+  a.click();
+}
+
+
 function calculateAllMasses() {
   // Get user input
   inputGene = document.getElementById('inputGeneText').value;
