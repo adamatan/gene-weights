@@ -14,6 +14,8 @@ window.addEventListener('DOMContentLoaded', (event) => {
   calculateAllMasses();
 });
 
+reductionTitle = document.querySelector('#mass-reduction')
+reductionTitle.innerHTML = `Note: A constant value of ${mass_reduction} is substracted from the masses.`
 
 document.querySelector('#csv-download-link').addEventListener('click', () =>
 {downloadCSV()} )
