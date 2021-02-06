@@ -17,11 +17,15 @@ document.querySelector('#csv-download-link').addEventListener('click', () =>
 {downloadCSV()} )
 
 function downloadCSV() {
+  element = document.getElementById('csv-download-link')
   a = document.createElement('a');
   document.body.appendChild(a);
   a.download = 'Gene_Masses.csv';
-  csv = encodeURIComponent('Hello, world, hi!')
-  a.href = `data:text/csv;charset=utf-8,${csv}`;
+
+  massesToCheck = getInputMassesValue();
+
+  csv = encodeURIComponent(headerLine)
+  a.href = `data:text/csv;charset=utf-8,${element.href}`;
   a.click();
 }
 
@@ -41,8 +45,23 @@ function calculateAllMasses() {
   massesPerSubgene = calculateMassesPerSubgene(massesToCheck, subGenes, singleGeneMasses);
 
   // Print the result
-  printHeaderLine(massesToCheck, totalMassText)
-  printMassesPerSubgene(massesPerSubgene, totalMassText);
+  headerLine = getHeaderLine(massesToCheck)
+  totalMassText.innerHTML += headerLine + '<br>'
+
+  geneMassLines = getGeneMassLines(massesPerSubgene);
+  totalMassText.innerHTML += geneMassLines.join('<br>')
+
+  // Set CSV download data
+  setCSVDonloadData(headerLine, geneMassLines)
+}
+
+function setCSVDonloadData(headerLine, geneMassLines){
+  element = document.getElementById('csv-download-link')
+  element.href = headerLine + '\n';
+  for (let i=0; i<geneMassLines.length; i++) {
+    element.href += geneMassLines[i] + '\n'
+  }
+  console.log(element.href)
 }
 
 function calculateMassesPerSubgene(massesToCheck, subGenes, singleGeneMasses) {
@@ -55,10 +74,15 @@ function calculateMassesPerSubgene(massesToCheck, subGenes, singleGeneMasses) {
     currentGene['masses'] = [];
 
     currentGene['mass'] = mass
+    smallestMassDelta = massesToCheck[0]-mass
 
     for (let j=0; j<massesToCheck.length; j++) {
       currentGene['masses'].push(massesToCheck[j]-mass)
+      if (Math.abs(massesToCheck[i]-mass) < Math.abs(smallestMassDelta)) {
+        smallestMassDelta = massesToCheck[i]-mass
+      }
     }
+    currentGene.minimumDelta = smallestMassDelta
     result.push(currentGene)
   }
   return result;
@@ -72,21 +96,26 @@ function calculateGeneMass(gene, singleGeneMasses) {
   return mass
 }
 
-function printHeaderLine(massesToCheck, textElement){
+function getHeaderLine(massesToCheck){
   lineToPrint = ['Gene', 'Mass']
   for (let i=0; i<massesToCheck.length; i++) {
     lineToPrint.push(`Delta(${massesToCheck[i]})`)
   }
-  textElement.innerHTML += lineToPrint.join(',') + '<br>';
+  lineToPrint.push('Minimum delta')
+  return lineToPrint.join(',')
 }
 
-function printMassesPerSubgene(massesPerSubgene, textElement) {
+function getGeneMassLines(massesPerSubgene) {
+  geneMassLines = []
   for (let i=0; i<massesPerSubgene.length; i++) {
     rawLine = massesPerSubgene[i]
     lineToPrint = [rawLine['name'], rawLine['mass']]
-    lineToPrint = lineToPrint.concat(rawLine['masses']).join(',')
-    textElement.innerHTML += lineToPrint + '<br>'
+    lineToPrint = lineToPrint.concat(rawLine['masses'])
+    lineToPrint = lineToPrint.concat(rawLine.minimumDelta)
+    lineToPrint = lineToPrint.join(',')
+    geneMassLines.push(lineToPrint)
   }
+  return geneMassLines;
 }
 
 function getInputGeneValues() {
