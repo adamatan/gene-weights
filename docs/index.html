@@ -12,8 +12,9 @@
   <div id="entire-document" class="entire">
     <h1>Gene mass calculator</h1>
     <div id="text-inputs">
-      <label for="geneText">Gene sequence</label>
-      <input type="text" id="geneText" name="geneText" required="required" value="gaGCATTAAGCTAGgac" size="80">
+      <label for="inputGeneText">Gene sequence</label>
+      <input type="text"
+              id="inputGeneText" name="inputGeneText" required="required" value="gaGCA" size="80">
 
       <div id="gene-input">
         <h2>Gene masses</h2>
@@ -54,11 +55,13 @@
       <div id="masses-to-search-div">
         <h2>Masses to search for</h2>
         <label id="masses-to-search-label" for="masses-to-search">Masses to seach for (one per line)</label>
-        <textarea id="masses-to-search" name="masses-to-search" placeholder="e.g.:&#13;&#10;150.4&#13;&#10;1100&#13;&#10;2000" rows="5" cols="33"></textarea>
+        <textarea id="masses-to-search" name="masses-to-search" placeholder="e.g.:&#13;&#10;150.4&#13;&#10;1100&#13;&#10;2000" rows="5" cols="33">100
+200
+300</textarea>
       </div>
 
       <div id="total-mass-div">
-        <h2>Total masxs</h2>
+        <h2>Total mass per sub-gene</h2>
         <span id="total-mass"></span>
       </div>
 

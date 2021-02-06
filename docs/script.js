@@ -1,28 +1,46 @@
 const genes = ['A', 'a', 'C', 'c', 'G', 'g', 'T', 't'];
 
-function getGeneValues() {
-  values = []
-  totalMass = document.getElementById("total-mass");
-  totalMass.innerHTML = '';
-  for (let i=0; i<genes.length; i++){
-    let number=document.getElementById(`gene-${genes[i]}`).value;
-    values.push(number)
-    totalMass.innerHTML += (number.toString() + '<br>');
-  }
-  console.log(values);
-  geneText = document.getElementById('geneText').value;
-  console.log(geneCombinations(geneText))
-}
-
 document.querySelectorAll('.gene-numeric-input').forEach(item => {
-  item.addEventListener('change', getGeneValues);
+  item.addEventListener('change', calculateAllMasses);
 })
 
+function calculateAllMasses() {
+
+  totalMassText = document.getElementById("total-mass");
+  inputGeneText = document.getElementById('inputGeneText').value;
+  totalMassText.innerHTML = null;
+  console.log(getInputGeneValues());
+
+  subGenes = geneCombinations(inputGeneText);
+  for (let i=0; i<subGenes.length; i++) {
+    totalMassText.innerHTML += (subGenes[i] + '<br>')
+  }
+  console.log(getMasses())
+}
+
+function getInputGeneValues() {
+  values = []
+  for (let i=0; i<genes.length; i++){
+    let number = parseFloat(document.getElementById(`gene-${genes[i]}`).value);
+    values.push(number)
+  }
+  return values
+}
+
+function getMasses() {
+  massesToSearchFor = document.getElementById("masses-to-search").value;
+  return massesToSearchFor.
+    split(/[\s,]+/).
+    map(parseFloat).
+    filter(item => item === parseFloat(item))
+}
 
 function geneCombinations(geneText) {
   subGenes = []
   for (let i=0; i<geneText.length; i++) {
-    subGenes.push(geneText.slice(0, i))
+    for (let j=i+1; j<geneText.length; j++) {
+      subGenes.push(geneText.slice(i, j))
+    }
   }
-  return subGenes;
+  return subGenes
 }
