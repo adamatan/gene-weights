@@ -77,6 +77,8 @@ function calculateMassesPerSubgene(massesToCheck, subGenes, singleGeneMasses) {
     var mass = calculateGeneMass(subGenes[i].subgene, singleGeneMasses)
     currentGene.name = subGenes[i].subgene;
     currentGene.dotted = subGenes[i].dotted;
+    currentGene.leftDotCount = subGenes[i].leftDotCount
+    currentGene.rightDotCount = subGenes[i].rightDotCount
     currentGene.masses = [];
     currentGene.mass = mass
     smallestMassDelta = massesToCheck[0]-mass
@@ -102,7 +104,9 @@ function calculateGeneMass(gene, singleGeneMasses) {
 }
 
 function getHeaderLine(massesToCheck){
-  lineToPrint = ['Dotted Gene', 'Gene', 'Mass']
+  lineToPrint = [
+    'Dotted Gene', 'left dot count(5)', 'right dot count(3)', 'Gene', 'Mass'
+  ]
   for (let i=0; i<massesToCheck.length; i++) {
     lineToPrint.push(`Delta(${massesToCheck[i]})`)
   }
@@ -114,7 +118,10 @@ function getGeneMassLines(massesPerSubgene) {
   geneMassLines = []
   for (let i=0; i<massesPerSubgene.length; i++) {
     rawLine = massesPerSubgene[i]
-    lineToPrint = [rawLine['dotted'], rawLine['name'], rawLine['mass']]
+    lineToPrint = [
+      rawLine.dotted, rawLine.leftDotCount, rawLine.rightDotCount,
+      rawLine.name, rawLine.mass
+      ]
     lineToPrint = lineToPrint.concat(rawLine['masses'])
     lineToPrint = lineToPrint.concat(rawLine.minimumDelta)
     lineToPrint = lineToPrint.join(',')
@@ -145,8 +152,11 @@ function calculateGeneCombinations(geneText) {
   for (let i=0; i<geneText.length; i++) {
     for (let j=i+1; j<geneText.length+1; j++) {
       subgene = geneText.slice(i, j)
-      dotted = '.'.repeat(i) + subgene + '.'.repeat(geneText.length-j)
-      subGenes.push({subgene, dotted})
+      leftDotCount = i
+      rightDotCount = geneText.length-j
+      dotted = '.'.repeat(leftDotCount) + subgene + '.'.repeat(rightDotCount)
+      subgene = {subgene, dotted, leftDotCount, rightDotCount}
+      subGenes.push(subgene)
     }
   }
   return subGenes
