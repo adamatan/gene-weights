@@ -4,19 +4,26 @@ document.querySelectorAll('.gene-numeric-input').forEach(item => {
   item.addEventListener('change', calculateAllMasses);
 })
 
+window.addEventListener('DOMContentLoaded', (event) => {
+  calculateAllMasses();
+});
+
+
 function calculateAllMasses() {
 
   totalMassText = document.getElementById("total-mass");
-  inputGeneText = document.getElementById('inputGeneText').value;
   totalMassText.innerHTML = null;
-  console.log(getInputGeneValues());
 
-  subGenes = geneCombinations(inputGeneText);
+  inputGeneText = document.getElementById('inputGeneText').value;
+  subGenes = calculateGeneCombinations(inputGeneText);
+
+  console.log(getInputGeneValues());
   for (let i=0; i<subGenes.length; i++) {
     totalMassText.innerHTML += (subGenes[i] + '<br>')
   }
-  console.log(getMasses())
+  console.log(getInputMassesValue())
 }
+
 
 function getInputGeneValues() {
   values = []
@@ -27,7 +34,7 @@ function getInputGeneValues() {
   return values
 }
 
-function getMasses() {
+function getInputMassesValue() {
   massesToSearchFor = document.getElementById("masses-to-search").value;
   return massesToSearchFor.
     split(/[\s,]+/).
@@ -35,7 +42,7 @@ function getMasses() {
     filter(item => item === parseFloat(item))
 }
 
-function geneCombinations(geneText) {
+function calculateGeneCombinations(geneText) {
   subGenes = []
   for (let i=0; i<geneText.length; i++) {
     for (let j=i+1; j<geneText.length; j++) {
